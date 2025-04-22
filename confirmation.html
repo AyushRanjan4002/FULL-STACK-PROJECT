@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - TicketBooking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">TicketBooking</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="movies.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Movies</a>
+                    <a href="sports.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Sports</a>
+                    <a href="concerts.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Concerts</a>
+                    <a href="my-bookings.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">
+                        <i class="fas fa-ticket-alt mr-1"></i>My Bookings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-12">
+        <div class="max-w-2xl mx-auto">
+            <!-- Success Message -->
+            <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                <div class="mb-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 mx-auto bg-green-100 rounded-full">
+                        <i class="fas fa-check-circle text-4xl text-green-500"></i>
+                    </div>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Booking Confirmed!</h1>
+                <p class="text-gray-600 mb-6">Your payment was successful and your booking is now confirmed.</p>
+                
+                <!-- Booking Details -->
+                <div id="bookingDetails" class="bg-gray-50 p-6 rounded-lg mb-6 text-left">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Booking Details</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Booking ID:</span>
+                            <span id="bookingId" class="font-medium"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Event:</span>
+                            <span id="eventName" class="font-medium"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Date:</span>
+                            <span id="eventDate" class="font-medium"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tickets:</span>
+                            <span id="ticketInfo" class="font-medium"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Total Amount:</span>
+                            <span id="totalAmount" class="font-medium text-blue-600"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Payment Status:</span>
+                            <span id="paymentStatus" class="font-medium text-green-600">Paid</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="index.html" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+                        Back to Home
+                    </a>
+                    <button id="downloadTicket" class="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition duration-300">
+                        <i class="fas fa-download mr-2"></i> Download Ticket
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get booking ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookingId = urlParams.get('bookingId');
+            
+            // Fetch booking details
+            if (bookingId) {
+                fetchBookingDetails(bookingId);
+            } else {
+                // Default mock data if no ID is provided
+                displayMockData();
+            }
+            
+            // Download ticket button
+            document.getElementById('downloadTicket').addEventListener('click', function() {
+                alert('Ticket download functionality would be implemented here.');
+                // In a real implementation, this would generate a PDF ticket
+            });
+        });
+        
+        async function fetchBookingDetails(bookingId) {
+            try {
+                const response = await fetch(`../backend/get_booking.php?id=${bookingId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayBookingDetails(data.booking);
+                } else {
+                    console.error('Error:', data.message);
+                    displayMockData();
+                }
+            } catch (error) {
+                console.error('Error fetching booking details:', error);
+                displayMockData();
+            }
+        }
+        
+        function displayBookingDetails(booking) {
+            document.getElementById('bookingId').textContent = booking.id;
+            document.getElementById('eventName').textContent = booking.event_name;
+            document.getElementById('eventDate').textContent = booking.booking_date;
+            document.getElementById('ticketInfo').textContent = `${booking.quantity} × ${booking.ticket_type.toUpperCase()}`;
+            document.getElementById('totalAmount').textContent = `₹${parseFloat(booking.total_amount).toFixed(2)}`;
+        }
+        
+        function displayMockData() {
+            document.getElementById('bookingId').textContent = 'TICKET-' + Math.floor(Math.random() * 10000);
+            document.getElementById('eventName').textContent = 'Rock Revolution Festival';
+            document.getElementById('eventDate').textContent = '2024-12-15';
+            document.getElementById('ticketInfo').textContent = '2 × VIP';
+            document.getElementById('totalAmount').textContent = '₹5,998.00';
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - TicketBooking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar (same as other pages) -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">TicketBooking</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="movies.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Movies</a>
+                    <a href="sports.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Sports</a>
+                    <a href="concerts.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium">Concerts</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-12">
+        <div class="max-w-2xl mx-auto">
+            <!-- Order Summary -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Order Summary</h2>
+                <div id="orderSummary" class="space-y-4">
+                    <p class="text-gray-600">Loading booking details...</p>
+                </div>
+            </div>
+            
+            <!-- Payment Form -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Payment Details</h2>
+                <form id="paymentForm" class="space-y-6">
+                    <!-- Payment Method Selection -->
+                    <div>
+                        <label class="text-gray-700 font-medium mb-2 block">Payment Method</label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                <input type="radio" name="paymentMethod" value="creditCard" class="mr-2" checked>
+                                <span><i class="far fa-credit-card mr-2"></i>Credit Card</span>
+                            </label>
+                            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                <input type="radio" name="paymentMethod" value="debitCard" class="mr-2">
+                                <span><i class="fas fa-credit-card mr-2"></i>Debit Card</span>
+                            </label>
+                            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                <input type="radio" name="paymentMethod" value="upi" class="mr-2">
+                                <span><i class="fas fa-mobile-alt mr-2"></i>UPI</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Credit Card Details (shown by default) -->
+                    <div id="creditCardDetails" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="cardName" class="block text-sm font-medium text-gray-700">Name on Card</label>
+                                <input type="text" id="cardName" name="cardName" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="cardNumber" class="block text-sm font-medium text-gray-700">Card Number</label>
+                                <input type="text" id="cardNumber" name="cardNumber" 
+                                    placeholder="XXXX XXXX XXXX XXXX" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="col-span-1">
+                                <label for="expiryMonth" class="block text-sm font-medium text-gray-700">Expiry Month</label>
+                                <select id="expiryMonth" name="expiryMonth" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">MM</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-span-1">
+                                <label for="expiryYear" class="block text-sm font-medium text-gray-700">Expiry Year</label>
+                                <select id="expiryYear" name="expiryYear" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">YYYY</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                                    <option value="2030">2030</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="123" required maxlength="3"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- UPI Details (hidden by default) -->
+                    <div id="upiDetails" class="space-y-4 hidden">
+                        <div>
+                            <label for="upiId" class="block text-sm font-medium text-gray-700">UPI ID</label>
+                            <input type="text" id="upiId" name="upiId" placeholder="yourname@upi"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Button -->
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+                        <span class="mr-2">Pay Now</span>
+                        <span id="paymentAmount">₹0</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Get booking ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('bookingId');
+        
+        // Mock function to get booking details
+        async function getBookingDetails() {
+            try {
+                const response = await fetch(`../backend/get_booking.php?id=${bookingId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayBookingDetails(data.booking);
+                } else {
+                    document.getElementById('orderSummary').innerHTML = `
+                        <div class="bg-red-100 p-4 rounded">
+                            <p class="text-red-700">Error: ${data.message}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // For demonstration purposes, show mock data if fetching fails
+                displayMockBookingDetails();
+            }
+        }
+        
+        // Display mock booking details for testing
+        function displayMockBookingDetails() {
+            const mockData = {
+                id: bookingId || '12345',
+                event_name: 'Rock Revolution Festival',
+                event_date: '2024-12-15',
+                ticket_type: 'VIP',
+                quantity: 2,
+                total_amount: 5998.00
+            };
+            
+            displayBookingDetails(mockData);
+        }
+        
+        // Display booking details
+        function displayBookingDetails(booking) {
+            // Ensure booking.total_amount is a number
+            const totalAmount = parseFloat(booking.total_amount);
+            
+            document.getElementById('orderSummary').innerHTML = `
+                <div class="border-b pb-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-700">Booking ID:</span>
+                        <span class="font-semibold">${booking.id}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-700">Event:</span>
+                        <span class="font-semibold">${booking.event_name}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-700">Date:</span>
+                        <span class="font-semibold">${booking.event_date}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-700">Ticket Type:</span>
+                        <span class="font-semibold">${booking.ticket_type.toUpperCase()}</span>
+                    </div>
+                </div>
+                <div class="pt-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-700">Tickets:</span>
+                        <span class="font-semibold">${booking.quantity}</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-bold mt-4">
+                        <span>Total:</span>
+                        <span class="text-blue-600">₹${isNaN(totalAmount) ? '0.00' : totalAmount.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Set payment amount
+            document.getElementById('paymentAmount').textContent = `₹${isNaN(totalAmount) ? '0.00' : totalAmount.toFixed(2)}`;
+        }
+        
+        // Toggle payment method details
+        const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                // Hide all payment details sections
+                document.getElementById('creditCardDetails').classList.add('hidden');
+                document.getElementById('upiDetails').classList.add('hidden');
+                
+                // Show the selected payment details section
+                if (this.value === 'creditCard' || this.value === 'debitCard') {
+                    document.getElementById('creditCardDetails').classList.remove('hidden');
+                } else if (this.value === 'upi') {
+                    document.getElementById('upiDetails').classList.remove('hidden');
+                }
+            });
+        });
+        
+        // Handle payment form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show processing message
+            document.querySelector('button[type="submit"]').innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+            `;
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // Update payment status in database
+                updatePaymentStatus();
+            }, 2000);
+        });
+        
+        // Function to save booking details to localStorage for My Bookings feature
+        function saveBookingToLocalStorage(booking) {
+            try {
+                const userEmail = localStorage.getItem('userEmail') || JSON.parse(localStorage.getItem('userData') || '{}').email;
+                if (!userEmail) {
+                    console.error('No user email found');
+                    return;
+                }
+
+                // Get existing bookings from localStorage or initialize empty array
+                let existingBookings = [];
+                const storedBookings = localStorage.getItem('myBookings');
+                if (storedBookings) {
+                    try {
+                        existingBookings = JSON.parse(storedBookings);
+                        if (!Array.isArray(existingBookings)) {
+                            existingBookings = [];
+                        }
+                    } catch (e) {
+                        console.error('Error parsing existing bookings:', e);
+                        existingBookings = [];
+                    }
+                }
+                
+                // Add current booking with additional details
+                const bookingToSave = {
+                    booking_id: booking.id || bookingId,
+                    event_name: booking.event_name,
+                    event_date: booking.event_date,
+                    ticket_type: booking.ticket_type,
+                    quantity: booking.quantity,
+                    total_amount: booking.total_amount,
+                    booking_date: new Date().toISOString().split('T')[0],
+                    status: 'confirmed',
+                    payment_status: 'completed',
+                    payment_date: new Date().toISOString().split('T')[0],
+                    user_email: userEmail
+                };
+                
+                // Remove any existing booking with the same ID
+                existingBookings = existingBookings.filter(b => b.booking_id !== bookingToSave.booking_id);
+                
+                // Add to the beginning of the array (newest first)
+                existingBookings.unshift(bookingToSave);
+                
+                // Save back to localStorage
+                localStorage.setItem('myBookings', JSON.stringify(existingBookings));
+                console.log('Booking saved successfully:', bookingToSave);
+            } catch (error) {
+                console.error('Error saving booking to localStorage:', error);
+            }
+        }
+        
+        // Update payment status
+        async function updatePaymentStatus() {
+            try {
+                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+                const userEmail = localStorage.getItem('userEmail') || JSON.parse(localStorage.getItem('userData') || '{}').email;
+                
+                if (!userEmail) {
+                    alert('Please log in before making a payment.');
+                    window.location.href = 'login.html?redirect=payment.html?bookingId=' + bookingId;
+                    return;
+                }
+                
+                // Get the current booking data
+                const bookingDetails = {
+                    id: bookingId,
+                    event_name: document.querySelector('#orderSummary .font-semibold:nth-child(4)')?.textContent,
+                    event_date: document.querySelector('#orderSummary .font-semibold:nth-child(6)')?.textContent,
+                    ticket_type: document.querySelector('#orderSummary .font-semibold:nth-child(8)')?.textContent,
+                    quantity: parseInt(document.querySelector('#orderSummary .font-semibold:nth-child(10)')?.textContent || '1'),
+                    total_amount: parseFloat(document.querySelector('#orderSummary .text-blue-600')?.textContent.replace('₹', '') || '0'),
+                    user_email: userEmail
+                };
+                
+                console.log('Sending payment update with details:', bookingDetails);
+                
+                // First update the payment status in the database
+                const response = await fetch('../backend/update_payment.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        bookingId: bookingId,
+                        userEmail: userEmail,
+                        paymentMethod: paymentMethod,
+                        status: 'completed',
+                        amount: bookingDetails.total_amount
+                    }),
+                });
+                
+                const data = await response.json();
+                console.log('Payment update response:', data);
+                
+                if (data.success) {
+                    // Save to localStorage only after successful database update
+                    saveBookingToLocalStorage(bookingDetails);
+                    
+                    // Show success message and redirect to confirmation page
+                    alert('Payment successful! Redirecting to confirmation page...');
+                    window.location.href = `confirmation.html?bookingId=${bookingId}`;
+                } else {
+                    throw new Error(data.message || 'Payment update failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Payment failed: ' + error.message);
+                document.querySelector('button[type="submit"]').innerHTML = `
+                    <span class="mr-2">Try Again</span>
+                    <span id="paymentAmount">₹${document.getElementById('paymentAmount').textContent.substring(1)}</span>
+                `;
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            getBookingDetails();
+        });
+    </script>
+</body>
+</html> 
